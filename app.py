@@ -2,6 +2,14 @@ from flask import Flask, request, render_template, redirect, url_for, session
 from flaskext.mysql import MySQL
 import pymysql
 import re
+import datetime
+import io
+import cv2
+import os
+import numpy as np
+import pytesseract
+from PIL import Image
+from flask import Flask, request, render_template, redirect, url_for, session
 
 app = Flask(__name__)
 
@@ -18,9 +26,72 @@ mysql.init_app(app)
 def home():
     return render_template("index.html")
 
-@app.route('/s')
-def price():
+@app.route('/scanner', methods=['GET', 'POST'])
+def scan_file():
+    if request.method == 'POST':
+        start_time = datetime.datetime.now()
+        img1 = request.files['file'].read()
+        img = Image.open(io.BytesIO(img1))
+    #     # Rescaling the image
+        img=np.array(img)
+        img = cv2.resize(img, None, fx=1.5, fy=1.5, interpolation=cv2.INTER_CUBIC) 
+
+    # Converting image to gray-scale
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    # Applying dilation and erosion to remove the noise
+        kernel = np.ones((1, 1), np.uint8)
+        img = cv2.dilate(img, kernel, iterations=1)
+        img = cv2.erode(img, kernel, iterations=1)
+
+        # Apply threshold to get image with only black and white
+        list_of_methods = ["GaussianBlur", "bilateralFilter", "medianBlur", "GaussianBlurAdaptive", "bilateralFilterAdaptive", "medianBlurAdaptive"]
+        img = apply_threshold(img, list_of_methods[3])
+        # scanned_text = pytesseract.image_to_string(Image.open(io.BytesIO(img)))
+        scanned_text = pytesseract.image_to_string(img)
+
+        print("Found data:", scanned_text)
+
+        session['data'] = {
+            "text": scanned_text,
+            "time": str((datetime.datetime.now() - start_time).total_seconds())
+        }
+
+        return redirect(url_for('result'))
+
+@app.route('/scan')
+def scan():
     return render_template("scanner.html")
+
+@app.route('/result')
+def result():
+    if "data" in session:
+        data = session['data']
+        return render_template(
+            "result.html",
+            title="Result",
+            time=data["time"],
+            text=data["text"],
+            words=len(data["text"].split(" "))
+        )
+    else:
+        return "Wrong request method."
+
+def apply_threshold(img, argument):
+    # Applying blur (each of which has its pros and cons, however,
+    # median blur and bilateral filter usually perform better than gaussian blur.):
+
+    switcher = {
+        "GaussianBlur": cv2.threshold(cv2.GaussianBlur(img, (5, 5), 0), 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1],
+        "bilateralFilter": cv2.threshold(cv2.bilateralFilter(img, 5, 75, 75), 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1],
+        "medianBlur": cv2.threshold(cv2.medianBlur(img, 3), 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1],
+        "GaussianBlurAdaptive": cv2.adaptiveThreshold(cv2.GaussianBlur(img, (5, 5), 0), 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 31, 2),
+        "bilateralFilterAdaptive": cv2.adaptiveThreshold(cv2.bilateralFilter(img, 9, 75, 75), 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 31, 2),
+        "medianBlurAdaptive": cv2.adaptiveThreshold(cv2.medianBlur(img, 3), 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 31, 2)
+    }
+    return switcher.get(argument, "Invalid method")
+
+
 
 @app.route('/new',methods=['GET', 'POST'])
 def register():
