@@ -3,7 +3,8 @@ $('.message a').click(function() {
     $('form').animate({ height: "toggle", opacity: "toggle" }, "slow");
 });
 
-$('#fileup').change(function() {
+function fileValidation() {
+    console.log("Hi");
     Array.prototype.forEach.call(
         document.querySelectorAll(".file-upload__button"),
         function(button) {
@@ -35,8 +36,9 @@ $('#fileup').change(function() {
     );
 
     //here we take the file extension and set an array of valid extensions
-    var res = $('#fileup').val();
-    var arr = res.split("\\");
+    // var res = $('#fileup').val();
+    // var arr = res.split("\\");
+    var arr = $('#actual-btn').val().split("\\");
     var filename = arr.slice(-1)[0];
     filextension = filename.split(".");
     filext = "." + filextension.slice(-1)[0];
@@ -64,4 +66,4 @@ $('#fileup').change(function() {
         $("#submitbtn").show();
         $("#fakebtn").hide();
     }
-});
+}
