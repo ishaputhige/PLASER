@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block body %} {% if final_list %}
+{% extends 'base.html' %} {% block body %} {% if result %}
 <table class="table">
     <thead>
         <tr>
@@ -9,7 +9,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for key,value in final_list.items() %} {% if value[0]=="Best" %}
+        {% for key,value in result.items() %} {% if value[0]=="Best" %}
         <tr class="table-success">
             <th scope="row"></th>
             <td>{{ key }}</td>
