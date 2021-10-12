@@ -9,6 +9,8 @@ import os
 import numpy as np
 import pytesseract
 from PIL import Image
+from post_ocr import post_ocr
+from fuzzy import get_details
 from flask import Flask, request, render_template, redirect, url_for, session
 
 app = Flask(__name__)
@@ -53,31 +55,31 @@ def scan_file():
         scanned_text = pytesseract.image_to_string(img)
 
         print("Found data:", scanned_text)
-
-        session['data'] = {
-            "text": scanned_text,
-            "time": str((datetime.datetime.now() - start_time).total_seconds())
-        }
-
-        return redirect(url_for('result'))
+        ingredient_list=post_ocr(scanned_text)
+        final_list=get_details(ingredient_list)
+        # session['data'] = {
+        #     "text": scanned_text,
+        #     "time": str((datetime.datetime.now() - start_time).total_seconds())
+        # }
+        return render_template("result.html",result=final_list)
 
 @app.route('/scan')
 def scan():
     return render_template("scanner.html")
 
-@app.route('/result')
-def result():
-    if "data" in session:
-        data = session['data']
-        return render_template(
-            "result.html",
-            title="Result",
-            time=data["time"],
-            text=data["text"],
-            words=len(data["text"].split(" "))
-        )
-    else:
-        return "Wrong request method."
+# @app.route('/result')
+# def result():
+#     if "data" in session:
+#         data = session['data']
+#         return render_template(
+#             "result.html",
+#             title="Result",
+#             time=data["time"],
+#             text=data["text"],
+#             words=len(data["text"].split(" "))
+#         )
+#     else:
+#         return "Wrong request method."
 
 def apply_threshold(img, argument):
     # Applying blur (each of which has its pros and cons, however,

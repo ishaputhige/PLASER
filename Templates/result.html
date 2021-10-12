@@ -1,3 +1,35 @@
-{% extends 'base.html' %} {% block body %} {% if text %}
-<p> {{ text }}</p>
+{% extends 'base.html' %} {% block body %} {% if final_list %}
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">No.</th>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Rating</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for key,value in final_list.items() %} {% if value[0]=="Best" %}
+        <tr class="table-success">
+            <th scope="row"></th>
+            <td>{{ key }}</td>
+            <td>{{ value[1] }}</td>
+            <td>{{ value[0] }}</td>
+        </tr>
+        {% if value[0]=="Good" %}
+        <tr class="table-info">
+            <th scope="row"></th>
+            <td>{{ key }}</td>
+            <td>{{ value[1] }}</td>
+            <td>{{ value[0] }}</td>
+        </tr>
+        {% if value[0]=="Poor" %}
+        <tr class="table-danger">
+            <th scope="row"></th>
+            <td>{{ key }}</td>
+            <td>{{ value[1] }}</td>
+            <td>{{ value[0] }}</td>
+        </tr>
+    </tbody>
+</table>
 {% endif %} {% endblock %}
