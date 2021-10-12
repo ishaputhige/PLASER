@@ -12,7 +12,7 @@ from PIL import Image
 from flask import Flask, request, render_template, redirect, url_for, session
 
 app = Flask(__name__)
-
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 mysql = MySQL()
 
 # MySQL configurations
@@ -29,8 +29,10 @@ def home():
 @app.route('/scanner', methods=['GET', 'POST'])
 def scan_file():
     if request.method == 'POST':
+        pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
         start_time = datetime.datetime.now()
         img1 = request.files['file'].read()
+       # print("Hello")
         img = Image.open(io.BytesIO(img1))
     #     # Rescaling the image
         img=np.array(img)
@@ -142,4 +144,5 @@ def register():
     return render_template("login.html",msg=msg)
 
 if __name__ == '__main__':
+    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
     app.run(debug=True)
