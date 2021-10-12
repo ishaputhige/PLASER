@@ -16,20 +16,21 @@
             <td>{{ value[1] }}</td>
             <td>{{ value[0] }}</td>
         </tr>
-        {% if value[0]=="Good" %}
+        {% endif %} {% if value[0]=="Good" %}
         <tr class="table-info">
             <th scope="row"></th>
             <td>{{ key }}</td>
             <td>{{ value[1] }}</td>
             <td>{{ value[0] }}</td>
         </tr>
-        {% if value[0]=="Poor" %}
+        {% endif %} {% if value[0]=="Poor" %}
         <tr class="table-danger">
             <th scope="row"></th>
             <td>{{ key }}</td>
             <td>{{ value[1] }}</td>
             <td>{{ value[0] }}</td>
         </tr>
+        {% endif %} {% endfor %}
     </tbody>
 </table>
 {% endif %} {% endblock %}
