@@ -65,7 +65,7 @@ def scan_file():
 
 @app.route('/scan')
 def scan():
-    return render_template("scanner.html")
+    return render_template("profile.html")
 
 # @app.route('/result')
 # def result():
