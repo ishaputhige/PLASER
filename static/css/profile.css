@@ -1,5 +1,31 @@
 /* Global settings */
 
+.btn {
+    float: right;
+    width: 180px;
+}
+
+.btn .add{
+    border: 0;
+    color : #fff;
+    font-size: 20px;
+    background-color: #6b6;
+}
+.btn .add:hover {
+    background-color: #494;
+}
+
+.btn .change{
+    border: 0;
+    color : #fff;
+    font-size: 20px;
+    background-color: rgba(189, 180, 61, 0.89);
+}
+
+.btn .change:hover {
+    background-color: rgb(175, 209, 82);
+}
+
 .product-image {
     float: left;
     width: 20%;

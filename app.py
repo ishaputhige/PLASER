@@ -67,6 +67,14 @@ def scan_file():
 def scan():
     return render_template("profile.html")
 
+@app.route('/add_product')
+def add_product():
+    return render_template("new_product.html")
+
+@app.route('/edit_product')
+def edit_product():
+    return render_template("edit_product.html")
+
 # @app.route('/result')
 # def result():
 #     if "data" in session:
