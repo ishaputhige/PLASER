@@ -1,0 +1,15 @@
+{% extends 'base.html' %} {% block head %}
+<title>Dashboard </title>
+{% endblock%} {% block body %}
+<br>
+<div>
+    <h1 style="display: inline">All Products Displayed Here: </h1>
+    <a style="display: inline" class="btn btn-success float-right" href="/product/new">+ New Product</a>
+</div>
+
+<hr> {% for product in product_dict %}
+<h2>{{product.name}}</h2>
+<p>{{product.date}}</p>
+<a href="/product/delete/{{product.id}}"> yeh edit ke liye</a>
+<a href="/product/edit/{{product.id}}">yeh delete ke liye</a>
+<hr> {% endfor %} {% endblock%}
