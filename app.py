@@ -63,31 +63,33 @@ def scan_file():
         # }
         return render_template("result.html",result=final_list)
 
-@app.route('/scan')
+@app.route('/dashboard')
 def scan():
+    #function call for getting dictionary
     return render_template("profile.html")
 
-@app.route('/add_product')
+@app.route('/new_product',methods=['GET', 'POST'])
 def add_product():
-    return render_template("new_product.html")
+    if request.method== "POST":
+        prod_name=request.form['name']
+        expiry_date=request.form['date']
+        # add query to to insert into db
+        return redirect('/dashboard')
+    else:
+        return render_template("new_product.html")
 
-@app.route('/edit_product')
-def edit_product():
-    return render_template("edit_product.html")
+@app.route('/edit_product/<int:id>')
+def edit_product(id):
+    prod_to_edit=#query for finding row for the particular id
+    if request.method== 'POST':
+        prod_name=request.form['name']
+        expiry_date=request.form['date']
+        # add query to to insert into db
+        return redirect('/dashboard')   
+    else: 
+        return render_template("edit_product.html",result=prod_to_edit)
 
-# @app.route('/result')
-# def result():
-#     if "data" in session:
-#         data = session['data']
-#         return render_template(
-#             "result.html",
-#             title="Result",
-#             time=data["time"],
-#             text=data["text"],
-#             words=len(data["text"].split(" "))
-#         )
-#     else:
-#         return "Wrong request method."
+
 
 def apply_threshold(img, argument):
     # Applying blur (each of which has its pros and cons, however,
