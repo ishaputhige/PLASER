@@ -6,6 +6,8 @@ import datetime
 import io
 import cv2
 import os
+from config import Config
+from dotenv import load_dotenv
 import numpy as np
 import pytesseract
 from PIL import Image
@@ -17,11 +19,20 @@ app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 mysql = MySQL()
 
+app.config.from_object(Config)
+
+
+
 # MySQL configurations
-app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = '10102000'
-app.config['MYSQL_DATABASE_DB'] = 'plaser'
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+load_dotenv()
+user = os.environ.get('MYSQL_DATABASE_USER')
+pswrd = os.environ.get('MYSQL_DATABASE_PASSWORD')
+dbname = os.environ.get('MYSQL_DATABASE_DB')
+host = os.environ.get('MYSQL_DATABASE_HOST')
+# app.config['MYSQL_DATABASE_USER'] = 'admin'
+# app.config['MYSQL_DATABASE_PASSWORD'] = 'plaser2021'
+# app.config['MYSQL_DATABASE_DB'] = 'plaser'
+# app.config['MYSQL_DATABASE_HOST'] = 'plaser-test.cp4vsdtdjf2c.ap-south-1.rds.amazonaws.com'
 mysql.init_app(app)
 
 @app.route('/')
@@ -78,16 +89,16 @@ def add_product():
     else:
         return render_template("new_product.html")
 
-@app.route('/edit_product/<int:id>')
-def edit_product(id):
-    prod_to_edit=#query for finding row for the particular id
-    if request.method== 'POST':
-        prod_name=request.form['name']
-        expiry_date=request.form['date']
-        # add query to to insert into db
-        return redirect('/dashboard')   
-    else: 
-        return render_template("edit_product.html",result=prod_to_edit)
+# @app.route('/edit_product/<int:id>')
+# def edit_product(id):
+#     prod_to_edit= #query for finding row for the particular id
+#     if request.method== 'POST':
+#         prod_name=request.form['name']
+#         expiry_date=request.form['date']
+#         # add query to to insert into db
+#         return redirect('/dashboard')   
+#     else: 
+#         return render_template("edit_product.html",result=prod_to_edit)
 
 
 
