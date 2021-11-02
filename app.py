@@ -21,14 +21,12 @@ mysql = MySQL()
 
 app.config.from_object(Config)
 
-
-
 # MySQL configurations
 load_dotenv()
-user = os.environ.get('MYSQL_DATABASE_USER')
-pswrd = os.environ.get('MYSQL_DATABASE_PASSWORD')
-dbname = os.environ.get('MYSQL_DATABASE_DB')
-host = os.environ.get('MYSQL_DATABASE_HOST')
+app.config['MYSQL_DATABASE_USER'] = os.environ.get('MYSQL_DATABASE_USER')
+app.config['MYSQL_DATABASE_PASSWORD'] = os.environ.get('MYSQL_DATABASE_PASSWORD')
+app.config['MYSQL_DATABASE_DB'] = os.environ.get('MYSQL_DATABASE_DB')
+app.config['MYSQL_DATABASE_HOST'] = os.environ.get('MYSQL_DATABASE_HOST')
 # app.config['MYSQL_DATABASE_USER'] = 'admin'
 # app.config['MYSQL_DATABASE_PASSWORD'] = 'plaser2021'
 # app.config['MYSQL_DATABASE_DB'] = 'plaser'
