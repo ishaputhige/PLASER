@@ -9,6 +9,7 @@ import os
 from config import Config
 from dotenv import load_dotenv
 import numpy as np
+from pymysql.cursors import Cursor
 import pytesseract
 from PIL import Image
 from post_ocr import post_ocr
@@ -72,31 +73,61 @@ def scan_file():
         # }
         return render_template("result.html",result=final_list)
 
+def show_products(id):
+
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+    get_products = "SELECT product,expiry,product_id FROM products where id = '%d'" % (id)
+    cursor.execute(get_products)
+    results = cursor.fetchall()
+    
+    dic = {}
+    for name,exp,p_id in results:
+        dic[p_id] = [name,exp]
+    return dic
+
 @app.route('/dashboard')
 def scan():
-    #function call for getting dictionary
+    dic = show_products(id)
     return render_template("profile.html")
 
 @app.route('/new_product',methods=['GET', 'POST'])
 def add_product():
+
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+
     if request.method== "POST":
         prod_name=request.form['name']
         expiry_date=request.form['date']
         # add query to to insert into db
+
+        prod_to_add = "INTERT INTO products(id,product,expiry,product_id) VALUES (%s,%s,%s,NULL)",(id,prod_name,expiry_date)
+        cursor.execute(prod_to_add)
+
         return redirect('/dashboard')
     else:
         return render_template("new_product.html")
 
-# @app.route('/edit_product/<int:id>')
-# def edit_product(id):
-#     prod_to_edit= #query for finding row for the particular id
-#     if request.method== 'POST':
-#         prod_name=request.form['name']
-#         expiry_date=request.form['date']
-#         # add query to to insert into db
-#         return redirect('/dashboard')   
-#     else: 
-#         return render_template("edit_product.html",result=prod_to_edit)
+@app.route('/product/edit/<int:id>')
+def edit_product(id):
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+    prod_to_edit= "SELECT product,expiry,product_id from products where product_id = '%d'" % (id)
+    cursor.execute(prod_to_edit)
+
+    if request.method== 'POST':
+        prod_name=request.form['name']
+        expiry_date=request.form['date']
+        
+        prod_to_update = "UPDATE PRODUCTS SET product = '%s', expiry = '%d'" % (prod_name,expiry_date)
+        cursor.execute(prod_to_update)
+
+        return redirect('/dashboard')   
+    else: 
+        return render_template("edit_product.html",result=prod_to_edit)
 
 
 
@@ -154,6 +185,7 @@ def register():
 
         if account:
             msg = "Sucessfully logged-In"
+
         else:
             # Account doesnt exist or username/password incorrect
             msg = 'Incorrect username/password!'
