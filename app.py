@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template, redirect, url_for, session
+from flask_session import Session
 from flaskext.mysql import MySQL
 import pymysql
 import re
@@ -19,7 +20,9 @@ from flask import Flask, request, render_template, redirect, url_for, session
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 mysql = MySQL()
-
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 app.config.from_object(Config)
 
 # MySQL configurations
@@ -89,12 +92,15 @@ def show_products(id):
 
 @app.route('/dashboard')
 def scan():
-    dic = show_products(id)
-    return render_template("profile.html")
+    if session.get('userid'):
+        dic = show_products(session.get('userid'))
+        return render_template("profile.html",result=dic)
+    else:
+        return redirect('/new')
+
 
 @app.route('/new_product',methods=['GET', 'POST'])
 def add_product():
-
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
 
@@ -185,6 +191,8 @@ def register():
 
         if account:
             msg = "Sucessfully logged-In"
+            user_id= # sql query for getting uid from email 
+            session['userid']=user_id
 
         else:
             # Account doesnt exist or username/password incorrect
