@@ -117,7 +117,8 @@ def add_product():
         return render_template("new_product.html")
 
 @app.route('/product/edit/<int:id>')
-def edit_product(id):
+def edit_product():
+    id = session.get("userid")
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
 
@@ -185,13 +186,15 @@ def register():
         email = request.form['lemail']
         password = request.form['lpassword']
         # Check if account exists using MySQL
-        cursor.execute('SELECT * FROM userdetails WHERE email = %s AND password = %s', (email, password))
+        cursor.execute('SELECT id FROM userdetails WHERE email = %s AND password = %s', (email, password))
         # Fetch one record and return result
         account = cursor.fetchone()
 
         if account:
             msg = "Sucessfully logged-In"
-            user_id= # sql query for getting uid from email 
+            # cursor.execute('SELECT ')
+            user_id= account['id'] # sql query for getting uid from email 
+            # print(account['id'])
             session['userid']=user_id
 
         else:
