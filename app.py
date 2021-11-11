@@ -13,7 +13,7 @@ import numpy as np
 from pymysql.cursors import Cursor
 import pytesseract
 from PIL import Image
-from post_ocr import post_ocr
+from post_ocr import post_ocr,sp
 from fuzzy import get_details
 from flask import Flask, request, render_template, redirect, url_for, session
 
@@ -40,9 +40,17 @@ mysql.init_app(app)
 @app.route('/')
 def home():
     return render_template("index.html")
+@app.route('/testing')
+def testing():
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    sp(1,cursor)
+    return "Hi"
 
 @app.route('/scanner', methods=['GET', 'POST'])
 def scan_file():
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
     if request.method == 'POST':
         pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
         start_time = datetime.datetime.now()
@@ -69,7 +77,7 @@ def scan_file():
 
         print("Found data:", scanned_text)
         ingredient_list=post_ocr(scanned_text)
-        final_list=get_details(ingredient_list)
+        final_list=get_details(ingredient_list,cursor)
         # session['data'] = {
         #     "text": scanned_text,
         #     "time": str((datetime.datetime.now() - start_time).total_seconds())
@@ -85,10 +93,10 @@ def show_products(id):
     cursor.execute(get_products)
     results = cursor.fetchall()
     
-    dic = {}
-    for name,exp,p_id in results:
-        dic[p_id] = [name,exp]
-    return dic
+    # dic = {}
+    # for name,exp,p_id in results:
+    #     dic[p_id] = [name,exp]
+    return results
 
 @app.route('/dashboard')
 def dashboard():
@@ -119,8 +127,8 @@ def add_product():
         return render_template("new_product.html")
 
 @app.route('/product/edit/<int:id>')
-def edit_product():
-    id = session.get("userid")
+def edit_product(id):
+    # id = session.get("userid")
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
 
