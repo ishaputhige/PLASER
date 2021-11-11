@@ -4,16 +4,13 @@
 
 <div class="edit">
     <div class="btn">
-      <!-- <a href= "{{ url_for('add_product') }}">  <button  class="add" >
-            Add</button></a> -->
-       <a href= "{{url_for('edit_product')}}">  <button class="change" >
-           Edit</button></a>
+
     </div>
 </div>
 
 <div class="shopping-cart">
     <!-- <div class="btn"><button>Update</button></div> -->
-    
+
 
     <div class="column-labels">
         <label class="product-details">Product</label>
@@ -21,79 +18,17 @@
         <!-- <label class="product-removal">Remove</label> -->
     </div>
 
-    <div >
+    <div>
         <h1 style="display: inline">All Products Displayed Here: </h1>
         <a style="display: inline" class="btn btn-success float-right" href="{{ url_for('add_product') }}">+ New Product</a>
     </div>
 
-    <hr> {% for product in product_dict %}
-    <h2>{{product.name}}</h2>
-    <p>{{product.date}}</p>
-    <a href="/product/delete/{{product.id}}"> yeh edit ke liye</a>
-    <a href="/product/edit/{{product.id}}">yeh delete ke liye</a>
+    <hr> {% for p in result %}
+    <h2>{{ p.product }}</h2>
+    <p>{{ p.expiry }}</p>
+    <a href="/product/edit/{{ p.product_id }}"> yeh edit ke liye</a>
+    <!-- <a href="{{ url_for('add_product') }}">yeh delete ke liye</a> -->
     <hr> {% endfor %}
-
-    <!-- <div class="product">
-        <div class="product-image">
-            <img src="images/nike.jpg">
-        </div>
-        <div class="product-details">
-            <div class="product-title">Nike Flex Form TR Men's Sneaker</div>
-            <p class="product-description"> It has a lightweight, breathable mesh upper with forefoot cables for a locked-down fit.</p>
-        </div>
-        <div class="product-price">12.99</div>
-        <div class="product-quantity">
-            <input type="number" value="2" min="1">
-        </div>
-        <div class="product-removal">
-            <button class="remove-product">
-        Remove
-      </button>
-        </div>
-        <div class="product-line-price">25.98</div>
-    </div>
-
-    <div class="product">
-        <div class="product-image">
-            <img src="images/adidas.jpg">
-        </div>
-        <div class="product-details">
-            <div class="product-title">ULTRABOOST UNCAGED SHOES</div>
-            <p class="product-description">Born from running culture, these men's shoes deliver the freedom of a cage-free design</p>
-        </div>
-        <div class="product-price">45.99</div>
-        <div class="product-quantity">
-            <input type="number" value="1" min="1">
-        </div>
-        <div class="product-removal">
-            <button class="remove-product">
-        Remove
-      </button>
-        </div>
-        <div class="product-line-price">45.99</div>
-    </div> -->
-
-    <!-- <div class="totals">
-        <div class="totals-item">
-            <label>Subtotal</label>
-            <div class="totals-value" id="cart-subtotal">71.97</div>
-        </div>
-        <div class="totals-item">
-            <label>Tax (5%)</label>
-            <div class="totals-value" id="cart-tax">3.60</div>
-        </div>
-        <div class="totals-item">
-            <label>Shipping</label>
-            <div class="totals-value" id="cart-shipping">15.00</div>
-        </div>
-        <div class="totals-item totals-item-total">
-            <label>Grand Total</label>
-            <div class="totals-value" id="cart-total">90.57</div>
-        </div>
-    </div> -->
-
-    <!-- <button class="checkout">Checkout</button> -->
-    <br> 
-    {% endblock %} {% block js %}
+    <br> {% endblock %} {% block js %}
     <script src="../static/js/profile.js"></script>
     {% endblock %}
