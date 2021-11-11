@@ -91,13 +91,15 @@ def show_products(id):
     return dic
 
 @app.route('/dashboard')
-def scan():
+def dashboard():
     if session.get('userid'):
         dic = show_products(session.get('userid'))
         return render_template("profile.html",result=dic)
     else:
         return redirect('/new')
-
+@app.route('/scan')
+def scan():
+    return render_template('scanner.html')
 
 @app.route('/new_product',methods=['GET', 'POST'])
 def add_product():
