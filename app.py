@@ -13,7 +13,7 @@ import numpy as np
 from pymysql.cursors import Cursor
 import pytesseract
 from PIL import Image
-from post_ocr import post_ocr,sp
+from post_ocr import post_ocr
 from fuzzy import get_details
 from flask import Flask, request, render_template, redirect, url_for, session
 
@@ -77,7 +77,7 @@ def scan_file():
 
         print("Found data:", scanned_text)
         ingredient_list=post_ocr(scanned_text)
-        final_list=get_details(ingredient_list,cursor)
+        final_list=get_details(ingredient_list,mysql)
         # session['data'] = {
         #     "text": scanned_text,
         #     "time": str((datetime.datetime.now() - start_time).total_seconds())
