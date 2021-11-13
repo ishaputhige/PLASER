@@ -124,7 +124,7 @@ def add_product():
         print(expiry_date)
         cursor.execute("INSERT INTO products(product_id,id,product,expiry) VALUES (NULL,%s,%s,%s)" , (session.get("userid"),prod_name,expiry_date))
         # cursor.execute(prod_to_add)
-
+        conn.commit()
         return redirect('/dashboard')
     else:
         return render_template("new_product.html")
@@ -144,7 +144,7 @@ def edit_product(id):
         
         prod_to_update = "UPDATE PRODUCTS SET product = '%s', expiry = '%d'" % (prod_name,expiry_date)
         cursor.execute(prod_to_update)
-
+        conn.commit()
         return redirect('/dashboard')   
     else: 
         return render_template("edit_product.html",result=prod_to_edit)
