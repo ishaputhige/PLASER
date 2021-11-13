@@ -1,9 +1,10 @@
-from flask import Flask, request, render_template, redirect, url_for, session
+from flask import Flask, request, render_template, redirect, url_for, session,flash
 from flask_session import Session
 from flaskext.mysql import MySQL
 import pymysql
 import re
 import datetime
+import time
 import io
 import cv2
 import os
@@ -99,7 +100,7 @@ def show_products(id):
     #     dic[p_id] = [name,exp]
     return results
 
-@app.route('/dashboard')
+@app.route('/dashboard',methods=['GET', 'POST'])
 def dashboard():
     if session.get('userid'):
         dic = show_products(session.get('userid'))
@@ -129,25 +130,60 @@ def add_product():
     else:
         return render_template("new_product.html")
 
-@app.route('/product/edit/<int:id>')
-def edit_product(id):
+@app.route('/edit_product/<string:p_id>',methods=['GET', 'POST'])
+def edit_product(p_id):
     # id = session.get("userid")
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
 
-    prod_to_edit= "SELECT product,expiry,product_id from products where product_id = '%d'" % (id)
+    prod_to_edit= "SELECT product,expiry from products where product_id = '%s'" % (p_id)
     cursor.execute(prod_to_edit)
 
     if request.method== 'POST':
         prod_name=request.form['name']
         expiry_date=request.form['date']
         
-        prod_to_update = "UPDATE PRODUCTS SET product = '%s', expiry = '%d'" % (prod_name,expiry_date)
+        prod_to_update = "UPDATE products SET product = '%s', expiry = '%s' where product_id = '%s'" % (prod_name,expiry_date,p_id)
         cursor.execute(prod_to_update)
         conn.commit()
         return redirect('/dashboard')   
     else: 
         return render_template("edit_product.html",result=prod_to_edit)
+
+@app.route('/remove_product/<string:p_id>',methods=['POST'])
+def remove_product(p_id):
+    # Create cursor
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    # Execute
+    delete = "DELETE FROM products WHERE product_id = '%s'" % (p_id)
+    cursor.execute(delete)
+
+    # Commit to DB
+    conn.commit()
+    # flash('Article Deleted', 'success')
+
+    return redirect('/dashboard')
+
+# @app.route('/remove_product')
+# def remove_product():
+#     id = session.get("userid")
+#     conn = mysql.connect()
+#     cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+#     prod_to_edit= "SELECT product,expiry,product_id from products where product_id = '%d'" % (id)
+#     cursor.execute(prod_to_edit)
+
+#     if request.method== 'POST':
+#         prod_name=request.form['name']
+#         expiry_date=request.form['date']
+        
+#         prod_to_update = "UPDATE products SET product = '%s', expiry = '%s' where product_id = '%s'" % (prod_name,expiry_date,id)
+#         cursor.execute(prod_to_update)
+#         conn.commit()
+#         return redirect('/dashboard')   
+#     else: 
+#         return render_template("edit_product.html",result=prod_to_edit)
 
 
 
@@ -209,6 +245,11 @@ def register():
             user_id= account['id'] # sql query for getting uid from email 
             # print(account['id'])
             session['userid']=user_id
+            
+            # return render_template("login.html",msg=msg)
+            # time.sleep(2)
+            # flash('Article Created', 'success')
+            return redirect('/dashboard')
 
         else:
             # Account doesnt exist or username/password incorrect

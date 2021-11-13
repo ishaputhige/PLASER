@@ -1,5 +1,7 @@
 {% extends 'base.html' %} {% block css %}
-<link href="../static/css/profile.css" rel="stylesheet" /> {% endblock %} {% block body %}
+<link href="../static/css/profile.css" rel="stylesheet" /> 
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> -->
+{% endblock %} {% block body %}
 <h1>Products</h1>
 
 <div class="edit">
@@ -24,9 +26,16 @@
     </div>
 
     <hr> {% for p in result %}
+    <!-- <h2>{{ p.product_id }}</h2> -->
     <h2>{{ p.product }}</h2>
     <p>{{ p.expiry }}</p>
-    <a href="/product/edit/{{ p.product_id }}"> yeh edit ke liye</a>
+    
+    <a style="display: inline" href="edit_product/{{p.product_id}}" class="btn btn-info btn-lg" >
+        <span class="glyphicon glyphicon-edit"></span> Edit</a>
+    <form action="remove_product/{{p.product_id}}" method="post">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="submit" value="Delete" class="btn btn-danger">
+        </form>
     <!-- <a href="{{ url_for('add_product') }}">yeh delete ke liye</a> -->
     <hr> {% endfor %}
     <br> {% endblock %} {% block js %}
