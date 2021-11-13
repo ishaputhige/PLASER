@@ -16,6 +16,7 @@ from PIL import Image
 from post_ocr import post_ocr
 from fuzzy import get_details
 from flask import Flask, request, render_template, redirect, url_for, session
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
@@ -118,9 +119,11 @@ def add_product():
         prod_name=request.form['name']
         expiry_date=request.form['date']
         # add query to to insert into db
-
-        prod_to_add = "INTERT INTO products(id,product,expiry,product_id) VALUES (%s,%s,%s,NULL)",(session.get("userid"),prod_name,expiry_date)
-        cursor.execute(prod_to_add)
+        print(type(expiry_date))
+        # expiry_date = datetime.strftime(expiry_date,"%Y-%m-%d")
+        print(expiry_date)
+        cursor.execute("INSERT INTO products(product_id,id,product,expiry) VALUES (NULL,%s,%s,%s)" , (session.get("userid"),prod_name,expiry_date))
+        # cursor.execute(prod_to_add)
 
         return redirect('/dashboard')
     else:
