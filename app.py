@@ -119,7 +119,7 @@ def add_product():
         expiry_date=request.form['date']
         # add query to to insert into db
 
-        prod_to_add = "INTERT INTO products(id,product,expiry,product_id) VALUES (%s,%s,%s,NULL)",(id,prod_name,expiry_date)
+        prod_to_add = "INTERT INTO products(id,product,expiry,product_id) VALUES (%s,%s,%s,NULL)",(session.get("userid"),prod_name,expiry_date)
         cursor.execute(prod_to_add)
 
         return redirect('/dashboard')
