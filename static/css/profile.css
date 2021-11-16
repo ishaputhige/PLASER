@@ -57,6 +57,39 @@
     text-align: right;
 }
 
+.table {
+    margin-top: 10px;
+    width: 65%;
+    /* border-collapse: collapse; */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.th,
+.td {
+    /* padding: 15px; */
+    text-align: center;
+    border-bottom: 1px solid rgb(37, 9, 9);
+}
+
+.tr:hover {
+    background-color: grey;
+}
+
+
+/* .table-hover>tbody>tr:nth-child(odd)>td,
+.table-hover>tbody>tr:nth-child(even)>td { 
+    width: 65%;
+    border: 1px solid black; */
+    /* padding-top: 5%;
+    margin-left: auto;
+    margin-right: auto; */
+/* } */
+
+/* .th,td {
+    border: 1px solid black;
+
+} */
 
 /* This is used as the traditional .clearfix class */
 

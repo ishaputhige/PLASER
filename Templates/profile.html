@@ -2,7 +2,7 @@
 <link href="../static/css/profile.css" rel="stylesheet" /> 
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> -->
 {% endblock %} {% block body %}
-<h1>Products</h1>
+<h1>Welcome {{session.fullname}}</h1>
 
 <div class="edit">
     <div class="btn">
@@ -14,30 +14,38 @@
     <!-- <div class="btn"><button>Update</button></div> -->
 
 
-    <div class="column-labels">
-        <label class="product-details">Product</label>
-        <label class="product-expiry">Expiry Date</label>
-        <!-- <label class="product-removal">Remove</label> -->
-    </div>
-
     <div>
-        <h1 style="display: inline">All Products Displayed Here: </h1>
-        <a style="display: inline" class="btn btn-success float-right" href="{{ url_for('add_product') }}">+ New Product</a>
+        <!-- <h2>All Products Displayed Here: </h2> -->
+        <a class="btn btn-success float-right" href="{{ url_for('add_product') }}">+ New Product</a>
     </div>
 
-    <hr> {% for p in result %}
+    <table class = 'table'>
+        <tr>
+            <!-- <th>ID</th> -->
+            <th>Product</th>
+            <th>Expiry</th>
+            <!-- <th>Date</th> -->
+            <th></th>
+            <th></th>
+          </tr>
+        
+    {% for p in result %}
+    <tr>
+        <td>{{ p.product }}</td>
+        <td>{{ p.expiry }}</td>
+        
+        <td><a style="display: inline" href="edit_product/{{p.product_id}}" class="btn btn-info btn-lg" >Edit</a></td>
+        <td><form action="remove_product/{{p.product_id}}" method="post">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="submit" value="Delete" class="btn btn-danger">
+            </form>
+        </td>
+    </tr>
     <!-- <h2>{{ p.product_id }}</h2> -->
-    <h2>{{ p.product }}</h2>
-    <p>{{ p.expiry }}</p>
     
-    <a style="display: inline" href="edit_product/{{p.product_id}}" class="btn btn-info btn-lg" >
-        <span class="glyphicon glyphicon-edit"></span> Edit</a>
-    <form action="remove_product/{{p.product_id}}" method="post">
-        <input type="hidden" name="_method" value="DELETE">
-        <input type="submit" value="Delete" class="btn btn-danger">
-        </form>
     <!-- <a href="{{ url_for('add_product') }}">yeh delete ke liye</a> -->
-    <hr> {% endfor %}
+    {% endfor %}
+        </table>
     <br> {% endblock %} {% block js %}
     <script src="../static/js/profile.js"></script>
     {% endblock %}

@@ -55,7 +55,7 @@ def scan_file():
     cursor = conn.cursor(pymysql.cursors.DictCursor)
     if request.method == 'POST':
         pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-        start_time = datetime.datetime.now()
+        # start_time = datetime.datetime.now()
         img1 = request.files['file'].read()
        # print("Hello")
         img = Image.open(io.BytesIO(img1))
@@ -235,7 +235,7 @@ def register():
         email = request.form['lemail']
         password = request.form['lpassword']
         # Check if account exists using MySQL
-        cursor.execute('SELECT id FROM userdetails WHERE email = %s AND password = %s', (email, password))
+        cursor.execute('SELECT id,fullname FROM userdetails WHERE email = %s AND password = %s', (email, password))
         # Fetch one record and return result
         account = cursor.fetchone()
 
@@ -243,8 +243,10 @@ def register():
             msg = "Sucessfully logged-In"
             # cursor.execute('SELECT ')
             user_id= account['id'] # sql query for getting uid from email 
+            fullname = account['fullname']
             # print(account['id'])
             session['userid']=user_id
+            session['fullname'] = fullname
             
             # return render_template("login.html",msg=msg)
             # time.sleep(2)
