@@ -14,7 +14,7 @@ import numpy as np
 from pymysql.cursors import Cursor
 import pytesseract
 from PIL import Image
-from post_ocr import post_ocr,sp
+from post_ocr import post_ocr
 from fuzzy import get_details
 from flask import Flask, request, render_template, redirect, url_for, session
 from datetime import datetime
@@ -269,7 +269,7 @@ def test_ajax():
     category= categories()
     return render_template("recommend.html",category=category)
 
-subset=pd.DataFrame()
+# subset=pd.DataFrame()
 @app.route("/getDataAjax",methods=['GET','POST'])
 def getDataAjax():
     res=[]
@@ -279,6 +279,7 @@ def getDataAjax():
         #     'Sun':['Bhopla 1','Bhopla 2','Bhopla 3','Bhopla 4'],
         # }
         brand=brands(request.form['data'])
+        global subset
         subset=brand[1]
         # res=courses[request.form['data']]
     return render_template("get_data.html",data=brand)
@@ -291,6 +292,7 @@ def dropdown3():
         #     'Cosmetic':['Peach 1','Peach 2','Peach 3','Peach 4'],
         #     'Sun':['Bhopla 1','Bhopla 2','Bhopla 3','Bhopla 4'],
         # }
+        print(subset)
         prod=products(request.form['data'],subset)
         # res=courses[request.form['data']]
     return render_template("get_data.html",data1=prod)
