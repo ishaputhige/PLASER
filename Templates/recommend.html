@@ -1,0 +1,61 @@
+{% extends 'base.html' %} {% block css %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% endblock %} {% block body %}
+<p>
+    {% if category[0] %} Category :
+    <select id='course_cate'>
+      <option value=''>Select</option>
+      {% for c in category %}
+      <option value='{{ c }}'>{{ c }}</option>
+      {% endfor %}
+    </select>
+</p>
+<p>
+    {% endif %} Brand :
+    <select id='courses'>
+    </select> Product Name :
+    <select id='product'>
+    </select>
+</p>
+
+<script>
+    $(document).ready(function() {
+        $("#course_cate").change(function() {
+            let cate = $(this).val();
+            if (cate != '') {
+                $.ajax({
+                    url: "{{url_for('getDataAjax')}}",
+                    type: "POST",
+                    data: {
+                        "data": cate
+                    },
+                    success: function(res) {
+                        $("#courses").html(res);
+                    }
+                });
+            } else {
+                $("#courses").html("");
+            }
+        });
+
+        $("#courses").change(function() {
+            let cate = $(this).val();
+            if (cate != '') {
+                $.ajax({
+                    url: "{{url_for('dropdown3')}}",
+                    type: "POST",
+                    data: {
+                        "data": cate
+                    },
+                    success: function(res) {
+                        $("#product").html(res);
+                    }
+                });
+            } else {
+                $("#product").html("");
+            }
+        });
+    });
+</script>
+</body>
+{% endblock%}

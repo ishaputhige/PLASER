@@ -8,10 +8,10 @@
 <h2>Edit:</h2>
 <form action="" method="POST">
     <label for="content">Product Name:</label>
-    <input class="form-control" type="text" name="name" id="name" value="{{result[0].product}}">
+    <input class="form-control" type="text" name="name" id="name" value="{{ result['product'] }}">
     <br>
     <label for="content">Expiry Date</label>
-    <input class="form-control" type="date" name="date" id="date" value="{{result[0].expiry}}">
+    <input class="form-control" type="date" name="date" id="date" value="{{ result['expiry'] }}">
     <br>
     <input type="submit" value="Save">
 </form>

@@ -14,10 +14,12 @@ import numpy as np
 from pymysql.cursors import Cursor
 import pytesseract
 from PIL import Image
-from post_ocr import post_ocr
+from post_ocr import post_ocr,sp
 from fuzzy import get_details
 from flask import Flask, request, render_template, redirect, url_for, session
 from datetime import datetime
+import pandas as pd
+from recommendations import categories,brands,products,recommend
 
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
@@ -135,10 +137,9 @@ def edit_product(p_id):
     # id = session.get("userid")
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
-
     prod_to_edit= "SELECT product,expiry from products where product_id = '%s'" % (p_id)
     cursor.execute(prod_to_edit)
-
+    results = cursor.fetchone() 
     if request.method== 'POST':
         prod_name=request.form['name']
         expiry_date=request.form['date']
@@ -148,7 +149,7 @@ def edit_product(p_id):
         conn.commit()
         return redirect('/dashboard')   
     else: 
-        return render_template("edit_product.html",result=prod_to_edit)
+        return render_template("edit_product.html",result=results)
 
 @app.route('/remove_product/<string:p_id>',methods=['POST'])
 def remove_product(p_id):
@@ -262,6 +263,37 @@ def register():
     # Show registration form with message (if any)
 
     return render_template("login.html",msg=msg)
+
+@app.route("/test_ajax")
+def test_ajax():
+    category= categories()
+    return render_template("recommend.html",category=category)
+
+subset=pd.DataFrame()
+@app.route("/getDataAjax",methods=['GET','POST'])
+def getDataAjax():
+    res=[]
+    if request.method=='POST':
+        # courses={
+        #     'Cosmetic':['Peach 1','Peach 2','Peach 3','Peach 4'],
+        #     'Sun':['Bhopla 1','Bhopla 2','Bhopla 3','Bhopla 4'],
+        # }
+        brand=brands(request.form['data'])
+        subset=brand[1]
+        # res=courses[request.form['data']]
+    return render_template("get_data.html",data=brand)
+
+@app.route("/dropdown3",methods=['GET','POST'])
+def dropdown3():
+    res=[]
+    if request.method=='POST':
+        # courses={
+        #     'Cosmetic':['Peach 1','Peach 2','Peach 3','Peach 4'],
+        #     'Sun':['Bhopla 1','Bhopla 2','Bhopla 3','Bhopla 4'],
+        # }
+        prod=products(request.form['data'],subset)
+        # res=courses[request.form['data']]
+    return render_template("get_data.html",data1=prod)
 
 if __name__ == '__main__':
     pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
