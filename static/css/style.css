@@ -73,6 +73,23 @@
     box-sizing: border-box;
 }
 
+#t1{ 
+    /* padding-top: 10%; */
+    padding-right: 10%;
+    padding-left: 10%;
+    align-self: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    border-collapse: collapse;
+    border-left: #000;
+    border-right: #000;
+    display: table;
+    border-collapse: separate;
+    border-spacing: 2px;
+    border-color: rgb(5, 5, 5) 
+}
+
 @media (prefers-reduced-motion: no-preference) {
      :root {
         scroll-behavior: smooth;
@@ -90,23 +107,6 @@ body {
     background-color: var(--bs-body-bg);
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
-
-.table {
-    /* padding-left: 10%;
-    padding-right: 10%;
-    padding-top: 10%; */
-    align-self: center;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: auto;
-    border-collapse: collapse;
-    border-left: #000;
-    border-right: #000;
-    display: table;
-    border-collapse: separate;
-    border-spacing: 2px;
-    border-color: rgb(5, 5, 5)
 }
 
 hr {
@@ -1839,7 +1839,7 @@ progress {
     --bs-table-active-bg: rgba(0, 0, 0, 0.1);
     --bs-table-hover-color: #212529;
     --bs-table-hover-bg: rgba(0, 0, 0, 0.075);
-    width: 70%;
+    width: 100%;
     margin-bottom: 1rem;
     color: #212529;
     vertical-align: top;
@@ -1874,7 +1874,7 @@ progress {
 }
 
 .table-bordered> :not(caption)>* {
-    border-width: 2px 0;
+    border-width: 1px 0;
 }
 
 .table-bordered> :not(caption)>*>* {
