@@ -19,7 +19,7 @@ def brands(category):
 def products(brand,category_subset):
     category_brand_subset = category_subset[category_subset['Brand'] == brand]
     products = sorted(category_brand_subset['Name'].unique() )
-    return products,category_brand_subset
+    return products
 
 
 def oh_encoder(tokens,N,ingredient_idx):
@@ -116,5 +116,6 @@ def recommend(category,product):
 
 # print(recommend('Cleanser','Bergamot Herbal Extract Toner'))
 # a,b = brands('Cleanser')
+# print(b)
 # print(products('BOSCIA',b))
 # print(categories())
