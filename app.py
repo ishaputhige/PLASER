@@ -296,7 +296,7 @@ def dropdown3():
         # }
         print(subset)
         global prod_name
-        prod_name=request.form['data']
+        #prod_name=request.form['data']
         prod=products(request.form['data'],subset)
         # res=courses[request.form['data']]
     return render_template("dropdown3.html",data=prod)
@@ -304,10 +304,10 @@ def dropdown3():
 @app.route("/submit_button",methods=['GET','POST'])
 def submit_button():
     print("INSIDE BTN")
-    data_frame= recommend(category_type,prod_name)
+    data_frame= recommend(category_type,request.form['data'])
     html = data_frame.to_html()
     # write html to file
-    text_file = open("answer.html", "w")
+    text_file = open("Templates/answer.html", "w")
     text_file.write(html)
     text_file.close()
     return render_template("answer.html",data=data_frame)

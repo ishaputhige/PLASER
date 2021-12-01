@@ -42,6 +42,7 @@
             }
         });
 
+
         $("#courses").change(function() {
             let cate = $(this).val();
             console.log("HI")
@@ -61,20 +62,30 @@
                 $("#product").html("");
             }
         });
-    });
 
-    $("#recommend_btn").click(function() {
-        console.log("HI")
-        $.ajax({
-            url: "{{url_for('submit_button')}}",
-            type: "POST",
-            data: {
-                "data": null
-            },
-            success: function(res) {
-                $("#df").html(res);
+        $("#recommend_btn").click(function() {
+            let cate = $("#product").val();
+            console.log("HI")
+
+            if (cate != '') {
+                $.ajax({
+                    url: "{{url_for('submit_button')}}",
+                    type: "POST",
+                    data: {
+                        "data": cate
+                    },
+                    success: function(res) {
+                        $("#df").html(res);
+                    }
+                });
+            } else {
+                $("#df").html("");
             }
         });
+
+
+
+
     });
 </script>
 </body>
