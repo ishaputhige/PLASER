@@ -16,6 +16,10 @@
     </select> Product Name :
     <select id='product'>
     </select>
+    <button type="submit" id="recommend_btn"> Recommend </button>
+    <div id="df">
+
+    </div>
 </p>
 
 <script>
@@ -53,6 +57,19 @@
                 });
             } else {
                 $("#product").html("");
+            }
+        });
+    });
+
+    $("#recommend_btn").change(function() {
+        $.ajax({
+            url: "{{url_for('submit_button')}}",
+            type: "POST",
+            data: {
+                "data": null
+            },
+            success: function(res) {
+                $("#df").html(res);
             }
         });
     });

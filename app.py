@@ -278,6 +278,8 @@ def getDataAjax():
         #     'Cosmetic':['Peach 1','Peach 2','Peach 3','Peach 4'],
         #     'Sun':['Bhopla 1','Bhopla 2','Bhopla 3','Bhopla 4'],
         # }
+        global category_type
+        category_type= request.form['data']
         brand=brands(request.form['data'])
         global subset
         subset=brand[1]
@@ -293,9 +295,22 @@ def dropdown3():
         #     'Sun':['Bhopla 1','Bhopla 2','Bhopla 3','Bhopla 4'],
         # }
         print(subset)
+        global prod_name
+        prod_name=request.form['data']
         prod=products(request.form['data'],subset)
         # res=courses[request.form['data']]
-    return render_template("get_data.html",data1=prod)
+    return render_template("dropdown3.html",data=prod)
+
+@app.route("/submit_button",methods=['GET','POST'])
+def submit_button():
+    data_frame= recommend(category_type,prod_name)
+    html = data_frame.to_html()
+    # write html to file
+    text_file = open("answer.html", "w")
+    text_file.write(html)
+    text_file.close()
+    return render_template("answer.html",data=data_frame)
+
 
 if __name__ == '__main__':
     pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
