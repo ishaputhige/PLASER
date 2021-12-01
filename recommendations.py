@@ -36,11 +36,12 @@ def closest_point(point, points):
     return points[cdist([point], points).argmin()]
 
 def recommend(category,product):
-
     if category is not None:
         category_subset = df[df['Label'] == category]
+        
 
     if product is not None:
+        print(product)
         #skincare_type = category_subset[category_subset[str(skin_type)] == 1]
 
         # Reset index
@@ -87,6 +88,7 @@ def recommend(category,product):
     category_subset['Y'] = tsne_features[:, 1]
 
     target = category_subset[category_subset['Name'] == product]
+    print("ratget",category_subset['Name'] == product)
 
     target_x = target['X'].values[0]
     target_y = target['Y'].values[0]
@@ -114,7 +116,7 @@ def recommend(category,product):
     
     return top_matches.head(5)
 
-# print(recommend('Cleanser','Bergamot Herbal Extract Toner'))
+# recommend('Cleanser','Bergamot Herbal Extract Toner')
 # a,b = brands('Cleanser')
 # print(b)
 # print(products('BOSCIA',b))
