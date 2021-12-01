@@ -1,0 +1,18 @@
+<table class="table">
+  <thead>
+      <tr>
+          <th scope="col">Label</th>
+          <th scope="col">Brand</th>
+          <th scope="col">Name</th>
+      </tr>
+  </thead>
+  <tbody>
+  {% for row in data %}
+      <tr>
+          <td>{{row['Label']}}</td>
+          <td>{{row['Brand']}}</td>
+          <td>{{row['Name']}}</td>
+      </tr>
+  {% endfor %}
+  </tbody>
+</table>
