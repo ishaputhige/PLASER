@@ -110,7 +110,7 @@ def recommend(category,product):
     top_matches['Ingredients in common'] = [c1_set.intersection( set([x.strip(' ')for x in product.split(",")]) ) for product in top_matches['Ingredients']]
 
     # Select relevant columns
-    top_matches = top_matches[['Label', 'Brand', 'Name', 'Price', 'Ingredients','Ingredients in common']]
+    top_matches = top_matches[['Label', 'Brand', 'Name']]
     top_matches = top_matches.reset_index(drop=True)
     top_matches = top_matches.drop(top_matches.index[0])
     

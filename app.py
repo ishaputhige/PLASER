@@ -305,9 +305,9 @@ def dropdown3():
 def submit_button():
     print("INSIDE BTN")
     data_frame= recommend(category_type,request.form['data'])
-    html = data_frame.to_html()
+    html = data_frame.to_html(classes='table table-striped')
     # write html to file
-    text_file = open("Templates/answer.html", "w")
+    text_file = open("Templates/answer.html", "w",encoding='utf-8')
     text_file.write(html)
     text_file.close()
     return render_template("answer.html",data=data_frame)
