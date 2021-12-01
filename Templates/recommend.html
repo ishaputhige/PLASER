@@ -44,6 +44,8 @@
 
         $("#courses").change(function() {
             let cate = $(this).val();
+            console.log("HI")
+
             if (cate != '') {
                 $.ajax({
                     url: "{{url_for('dropdown3')}}",
@@ -61,7 +63,8 @@
         });
     });
 
-    $("#recommend_btn").change(function() {
+    $("#recommend_btn").click(function() {
+        console.log("HI")
         $.ajax({
             url: "{{url_for('submit_button')}}",
             type: "POST",

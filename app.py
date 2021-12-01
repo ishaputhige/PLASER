@@ -303,6 +303,7 @@ def dropdown3():
 
 @app.route("/submit_button",methods=['GET','POST'])
 def submit_button():
+    print("INSIDE BTN")
     data_frame= recommend(category_type,prod_name)
     html = data_frame.to_html()
     # write html to file
