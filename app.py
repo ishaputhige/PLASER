@@ -20,6 +20,7 @@ from flask import Flask, request, render_template, redirect, url_for, session
 from datetime import datetime
 import pandas as pd
 from recommendations import categories,brands,products,recommend
+from reminders import reminder
 
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
@@ -44,11 +45,29 @@ mysql.init_app(app)
 @app.route('/')
 def home():
     return render_template("index.html")
+
 @app.route('/testing')
 def testing():
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
-    sp(1,cursor)
+    cursor.execute("select * from products")
+    results = cursor.fetchall()
+    now = datetime.now()
+    date_now = now.strftime("%Y-%m-%d")
+    # print(datetime.date(date_now-str(results[1]["expiry"])))
+    # print(len(results))
+    for i in range(len(results)):
+        date_format = "%Y-%m-%d"
+        # print(results[1]["expiry"])
+        a = datetime.strptime(str(results[i]["expiry"]), date_format)
+        b = datetime.strptime(date_now, date_format)
+        delta = a - b
+        print(delta.days) # that's it
+        if delta.days == 14 or delta.days == 7 or delta.days == 1:
+            cursor.execute("select * from userdetails where id = %s",results[i]["id"])
+            results2 = cursor.fetchone()
+            print(results2)
+            reminder(results2["fullname"],results[i]["product"],results[i]["expiry"],results2["email"],results2["mobile"])
     return "Hi"
 
 @app.route('/scanner', methods=['GET', 'POST'])
@@ -81,12 +100,12 @@ def scan_file():
 
         print("Found data:", scanned_text)
         ingredient_list=post_ocr(scanned_text)
-        final_list=get_details(ingredient_list,mysql)
+        final_list,count_list=get_details(ingredient_list,mysql)
         # session['data'] = {
         #     "text": scanned_text,
         #     "time": str((datetime.datetime.now() - start_time).total_seconds())
         # }
-        return render_template("result.html",result=final_list)
+        return render_template("result.html",result=final_list,data = count_list)
 
 def show_products(id):
 

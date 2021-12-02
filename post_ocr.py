@@ -5,9 +5,9 @@ def post_ocr(st1):
     a=re.sub(exp,'',st1)
     a=re.sub(exp2,'',a)
     e1=r"(?i)ingredients|content|contents|ingredient"
-    s=re.search(e1,a)
-    m=s.span()
-    a=a[m[1]:]
+    # s=re.search(e1,a)
+    # m=s.span()
+    # a=a[m[1]:]
     l=[x.strip() for x in re.split(',',a)]
     print(l)
     return l

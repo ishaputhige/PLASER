@@ -5,6 +5,16 @@
     width: 180px;
 }
 
+.whole-box{
+    padding: 20px
+}
+
+#table-prodcuts{
+    margin-left: 20px;
+    margin-right: 20px;
+
+}
+
 .btn .add {
     border: 0;
     color: #fff;

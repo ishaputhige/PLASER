@@ -1,11 +1,13 @@
 from config import Config
 from dotenv import load_dotenv
 import pymysql
+from collections import OrderedDict
 
 def get_details(arr,mysql):
     from getpass import getpass
     from mysql.connector import connect, Error
     from rapidfuzz import process
+    arr.sort()
     names_list = []
     ingred_dic = {}
     conn = mysql.connect()
@@ -28,6 +30,7 @@ def get_details(arr,mysql):
     except Error as e:
             print(e)
     dic = {}
+    red_names = []
     print(1)
     strOptions = ingred_dic.keys()
     # print(strOptions)
@@ -63,9 +66,19 @@ def get_details(arr,mysql):
                 if len(name) > 22:
                     pass
                 else:
-                    dic[name] = ["NA","Unable to find"]
+                    red_names.append(name)
                 # print("\n")
         except Error as e:
             print(e)
+    for name in red_names:
+        dic[name] = ["NA","Unable to find"]
+    count_dic = {"Best":0,"Good":0,"Poor":0,"NA":0}
+    for i in dic.keys():
+        if dic[i][0] not in count_dic:
+            count_dic[dic[i][0]] = 1
+        else:
+            count_dic[dic[i][0]] += 1
     print(dic.keys())
-    return dic
+    count_dic = OrderedDict(sorted(count_dic.items()))
+    print(count_dic)
+    return dic,count_dic

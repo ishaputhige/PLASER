@@ -2,6 +2,7 @@
 <link href="../static/css/profile.css" rel="stylesheet" /> 
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> -->
 {% endblock %} {% block body %}
+<div class = "whole-box">
 <h1>Welcome {{session.fullname}}</h1>
 
 <div class="edit">
@@ -16,10 +17,10 @@
 
     <div>
         <!-- <h2>All Products Displayed Here: </h2> -->
-        <a class="btn btn-success float-right" href="{{ url_for('add_product') }}">+ New Product</a>
+        <a class="btn btn-secondary" href="{{ url_for('add_product') }}">+ New Product</a>
     </div>
 
-    <table class = 'table'>
+    <table class = 'table' id = "table-products">
         <tr>
             <!-- <th>ID</th> -->
             <th>Product</th>
@@ -33,11 +34,10 @@
     <tr>
         <td>{{ p.product }}</td>
         <td>{{ p.expiry }}</td>
-        
-        <td><a style="display: inline" href="edit_product/{{p.product_id}}" class="btn btn-info btn-lg" >Edit</a></td>
+        <td><a style="display: inline" href="edit_product/{{p.product_id}}" class="btn btn-outline-warning" >Edit</a></td>
         <td><form action="remove_product/{{p.product_id}}" method="post">
             <input type="hidden" name="_method" value="DELETE">
-            <input type="submit" value="Delete" class="btn btn-danger">
+            <input type="submit" value="Delete" class="btn btn-outline-danger">
             </form>
         </td>
     </tr>
@@ -46,6 +46,8 @@
     <!-- <a href="{{ url_for('add_product') }}">yeh delete ke liye</a> -->
     {% endfor %}
         </table>
-    <br> {% endblock %} {% block js %}
+    <br> {% endblock %}
+    </div>
+    {% block js %}
     <script src="../static/js/profile.js"></script>
     {% endblock %}

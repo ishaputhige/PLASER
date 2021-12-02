@@ -73,6 +73,10 @@
     box-sizing: border-box;
 }
 
+.drpdwn1{
+    padding: 20px
+}
+
 #t1{ 
     /* padding-top: 10%; */
     padding-right: 10%;
@@ -1949,7 +1953,7 @@ progress {
 }
 
 .table-warning {
-    --bs-table-bg: #fff3cd;
+    --bs-table-bg: #ffffe6;
     --bs-table-striped-bg: #f2e7c3;
     --bs-table-striped-color: #000;
     --bs-table-active-bg: #e6dbb9;
@@ -1962,6 +1966,18 @@ progress {
 
 .table-danger {
     --bs-table-bg: #f8d7da;
+    --bs-table-striped-bg: #eccccf;
+    --bs-table-striped-color: #000;
+    --bs-table-active-bg: #dfc2c4;
+    --bs-table-active-color: #000;
+    --bs-table-hover-bg: #e5c7ca;
+    --bs-table-hover-color: #000;
+    color: #000;
+    border-color: #dfc2c4;
+}
+
+.table-unknown {
+    --bs-table-bg: #cacaca;
     --bs-table-striped-bg: #eccccf;
     --bs-table-striped-color: #000;
     --bs-table-active-bg: #dfc2c4;
