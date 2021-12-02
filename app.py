@@ -46,7 +46,7 @@ mysql.init_app(app)
 def home():
     return render_template("index.html")
 
-@app.route('/testing')
+@app.cli.command("testing")
 def testing():
     conn = mysql.connect()
     cursor = conn.cursor(pymysql.cursors.DictCursor)

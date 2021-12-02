@@ -7,17 +7,17 @@ def reminder(name,product,expiry,email,phone):
     emails = [email]
     numbers = [phone]
 
-    # for i in numbers:
-    #     import requests
-    #     url = "https://www.fast2sms.com/dev/bulk"
-    #     payload = "sender_id=FSTSMS&message="+message+"&language=english&route=p&numbers=" + i
-    #     headers = {
-    #     'authorization': "zOt4BpJjlwbdV805h62IUgHnACxQXrmTPSevRauE1ycs9WoY7LsQS5khPmERgdCaqvboDXUuBrLl207f",
-    #     'Content-Type': "application/x-www-form-urlencoded",
-    #     'Cache-Control': "no-cache",
-    #     }
-    #     response = requests.request("POST", url, data=payload, headers=headers)
-    #     print(response.text)
+    for i in numbers:
+        import requests
+        url = "https://www.fast2sms.com/dev/bulk"
+        payload = "sender_id=FSTSMS&message="+message+"&language=english&route=p&numbers=" + str(i)
+        headers = {
+        'authorization': "zOt4BpJjlwbdV805h62IUgHnACxQXrmTPSevRauE1ycs9WoY7LsQS5khPmERgdCaqvboDXUuBrLl207f",
+        'Content-Type': "application/x-www-form-urlencoded",
+        'Cache-Control': "no-cache",
+        }
+        response = requests.request("POST", url, data=payload, headers=headers)
+        print(response.text)
 
 
     for i in emails:

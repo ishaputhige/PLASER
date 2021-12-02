@@ -1,26 +1,38 @@
 {% extends 'base.html' %} {% block css %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 {% endblock %} {% block body %}
-<p>
-    {% if category[0] %} Category :
-    <select id='course_cate'>
+<div style=" height:250px; width:600px; border: 1px solid rgb(21, 22, 21); padding: 0.5em;">
+    <br>
+    <div style="width:800px; margin:0 auto;">
+        <label>Category :</label> {% if category[0] %}
+        <select id='course_cate'>
       <option value=''>Select</option>
       {% for c in category %}
       <option value='{{ c }}'>{{ c }}</option>
       {% endfor %}
-    </select>
-</p>
-<p>
-    {% endif %} Brand :
-    <select id='courses'>
-    </select> Product Name :
-    <select id='product'>
-    </select>
-    <button type="submit" id="recommend_btn"> Recommend </button>
-    <div id="df">
-
+    </select> {% endif %}
     </div>
-</p>
+    <br>
+    <div style="width:800px; margin:0 auto;">
+        <label>Brand  :</label>
+        <select id='courses'>
+    </select>
+    </div>
+    <br>
+    <div style="width:800px; margin:0 auto;">
+        <label>Product Name  :</label>
+        <select id='product'>
+    </select>
+    </div>
+    <br>
+    <div style="width:800px; margin:0 auto;">
+        <button type="submit" class="btn btn-warning" id="recommend_btn"> Recommend </button>
+    </div>
+    <br>
+</div>
+<div id="df">
+
+</div>
 
 <script>
     $(document).ready(function() {
@@ -66,8 +78,9 @@
         $("#recommend_btn").click(function() {
             let cate = $("#product").val();
             console.log("HI")
-
+            $("#df").html("");
             if (cate != '') {
+                res = ""
                 $.ajax({
                     url: "{{url_for('submit_button')}}",
                     type: "POST",
@@ -75,6 +88,7 @@
                         "data": cate
                     },
                     success: function(res) {
+                        console.log(res)
                         $("#df").html(res);
                     }
                 });
