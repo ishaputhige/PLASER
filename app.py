@@ -326,6 +326,10 @@ def submit_button():
     data_frame= recommend(category_type,request.form['data'])
     return render_template("answer.html", data=data_frame.to_dict(orient='records'))
 
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/new")
 
 if __name__ == '__main__':
     pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'

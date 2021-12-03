@@ -32,6 +32,9 @@
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard') }}">Product Tracker</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('test_ajax') }}">Product Recommender</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('register') }}">Login/Signup</a></li>
+                        {% if session['userid'] %}
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
